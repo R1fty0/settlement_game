@@ -1,0 +1,49 @@
+[gd_scene load_steps=5 format=3 uid="uid://kqp4eqiy7ypq"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_sgp6g"]
+sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+ground_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+
+[sub_resource type="Sky" id="Sky_o5qli"]
+sky_material = SubResource("ProceduralSkyMaterial_sgp6g")
+
+[sub_resource type="Environment" id="Environment_0wfyh"]
+background_mode = 2
+sky = SubResource("Sky_o5qli")
+tonemap_mode = 2
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_sgp6g"]
+size = Vector2(100, 100)
+subdivide_width = 20
+subdivide_depth = 20
+
+[node name="Main" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_0wfyh")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Environment" type="Node" parent="."]
+
+[node name="MainIsland" type="CSGBox3D" parent="Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.196716, 0)
+size = Vector3(10, 0.607, 10)
+
+[node name="StoneIsland" type="CSGBox3D" parent="Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.8035, -0.196716, 15.14)
+size = Vector3(5.9751, 0.607, 6.29443)
+
+[node name="WoodIsland" type="CSGBox3D" parent="Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.4964, -0.196716, -13.3822)
+size = Vector3(5.9751, 0.607, 6.29443)
+
+[node name="FoodIsland" type="CSGBox3D" parent="Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.8924, -0.196716, -17.3389)
+size = Vector3(5.9751, 0.607, 6.29443)
+
+[node name="WaterMesh" type="MeshInstance3D" parent="Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.314779, 0)
+mesh = SubResource("PlaneMesh_sgp6g")

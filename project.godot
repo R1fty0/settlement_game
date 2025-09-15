@@ -11,8 +11,16 @@ config_version=5
 [application]
 
 config/name="settlement_game"
+run/main_scene="uid://kqp4eqiy7ypq"
 config/features=PackedStringArray("4.4", "GL Compatibility")
 config/icon="res://icon.svg"
+
+[file_customization]
+
+folder_colors={
+"res://assets/": "red",
+"res://scenes/": "green"
+}
 
 [rendering]
 
