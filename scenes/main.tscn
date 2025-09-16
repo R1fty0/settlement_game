@@ -1,11 +1,11 @@
-[gd_scene load_steps=16 format=3 uid="uid://kqp4eqiy7ypq"]
+[gd_scene load_steps=17 format=3 uid="uid://kqp4eqiy7ypq"]
 
 [ext_resource type="Texture2D" uid="uid://b44gfyx7stw6a" path="res://assets/proto_tex/texture_02.png" id="1_0wfyh"]
 [ext_resource type="Texture2D" uid="uid://cdlu4ochhqklm" path="res://assets/proto_tex/texture_01.png" id="2_sugp2"]
-[ext_resource type="Script" uid="uid://c4p7f2k2fadyq" path="res://scripts/camera_controller.gd" id="3_sugp2"]
+[ext_resource type="Script" uid="uid://c4p7f2k2fadyq" path="res://scenes/player/camera_controller/camera_controller.gd" id="3_sugp2"]
 [ext_resource type="Material" uid="uid://btofvmchrrwn7" path="res://resources/materials/selection_material.tres" id="4_tbgi4"]
 [ext_resource type="Material" uid="uid://bd6wf87scg2b4" path="res://resources/materials/outline_material.tres" id="4_tefeu"]
-[ext_resource type="Script" uid="uid://crqf232bs108m" path="res://scripts/components/outline_component.gd" id="5_tbgi4"]
+[ext_resource type="Script" uid="uid://crqf232bs108m" path="res://common/components/mouse_interaction_component.gd" id="5_tbgi4"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_sgp6g"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
@@ -19,10 +19,6 @@ background_mode = 2
 sky = SubResource("Sky_o5qli")
 tonemap_mode = 2
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jyhfs"]
-albedo_texture = ExtResource("1_0wfyh")
-uv1_triplanar = true
-
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tbgi4"]
 albedo_texture = ExtResource("2_sugp2")
 uv1_triplanar = true
@@ -31,6 +27,15 @@ uv1_triplanar = true
 size = Vector2(100, 100)
 subdivide_width = 20
 subdivide_depth = 20
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_tefeu"]
+vertices = PackedVector3Array(11.2661, 0.499784, -19.9861, 11.2661, 0.499784, -14.4861, 16.2661, 0.499784, -14.4861, 16.2661, 0.499784, -19.9861, -14.9839, 0.499784, -16.2361, -14.9839, 0.499784, -10.4861, -9.98395, 0.499784, -10.4861, -9.98395, 0.499784, -16.2361, -4.73395, 0.499784, -4.73611, -4.73395, 0.499784, 4.51389, 4.51605, 0.499784, 4.51389, 4.51605, 0.499784, -4.73611, -13.4839, 0.499784, 12.2639, -13.4839, 0.499784, 17.7639, -8.23395, 0.499784, 17.7639, -8.23395, 0.499784, 12.2639)
+polygons = [PackedInt32Array(3, 2, 0), PackedInt32Array(0, 2, 1), PackedInt32Array(7, 6, 4), PackedInt32Array(4, 6, 5), PackedInt32Array(11, 10, 8), PackedInt32Array(8, 10, 9), PackedInt32Array(15, 14, 12), PackedInt32Array(12, 14, 13)]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jyhfs"]
+albedo_color = Color(0, 0, 0, 1)
+albedo_texture = ExtResource("1_0wfyh")
+uv1_triplanar = true
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tefeu"]
 albedo_texture = ExtResource("2_sugp2")
@@ -51,27 +56,34 @@ shadow_enabled = true
 
 [node name="Environment" type="Node" parent="."]
 
-[node name="MainIsland" type="CSGBox3D" parent="Environment"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.196716, 0)
-material_override = SubResource("StandardMaterial3D_jyhfs")
-size = Vector3(10, 0.607, 10)
-
-[node name="StoneIsland" type="CSGBox3D" parent="Environment"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.8035, -0.196716, 15.14)
-size = Vector3(5.9751, 0.607, 6.29443)
-
-[node name="WoodIsland" type="CSGBox3D" parent="Environment"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.4964, -0.196716, -13.3822)
-size = Vector3(5.9751, 0.607, 6.29443)
-
-[node name="FoodIsland" type="CSGBox3D" parent="Environment"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.8924, -0.196716, -17.3389)
-size = Vector3(5.9751, 0.607, 6.29443)
-
 [node name="WaterMesh" type="MeshInstance3D" parent="Environment"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.314779, 0)
 material_override = SubResource("StandardMaterial3D_tbgi4")
 mesh = SubResource("PlaneMesh_sgp6g")
+
+[node name="TestNavigationObstacle" type="CSGBox3D" parent="Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.537, 0.5, 0)
+use_collision = true
+
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="Environment"]
+navigation_mesh = SubResource("NavigationMesh_tefeu")
+
+[node name="MainIsland" type="CSGBox3D" parent="Environment/NavigationRegion3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.196716, 0)
+material_override = SubResource("StandardMaterial3D_jyhfs")
+size = Vector3(10, 0.607, 10)
+
+[node name="StoneIsland" type="CSGBox3D" parent="Environment/NavigationRegion3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.8035, -0.196716, 15.14)
+size = Vector3(5.9751, 0.607, 6.29443)
+
+[node name="WoodIsland" type="CSGBox3D" parent="Environment/NavigationRegion3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.4964, -0.196716, -13.3822)
+size = Vector3(5.9751, 0.607, 6.29443)
+
+[node name="FoodIsland" type="CSGBox3D" parent="Environment/NavigationRegion3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.8924, -0.196716, -17.3389)
+size = Vector3(5.9751, 0.607, 6.29443)
 
 [node name="CameraController" type="Node3D" parent="." node_paths=PackedStringArray("rotation_x", "camera_zoom_pivot", "camera")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5199, 0, 0)
@@ -89,13 +101,12 @@ transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, -0.283894,
 
 [node name="Camera3D" type="Camera3D" parent="CameraController/CameraRotationX/CameraZoomPivot"]
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+[node name="OutlineTestMesh" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.617854, 0)
 material_override = SubResource("StandardMaterial3D_tefeu")
-material_overlay = ExtResource("4_tefeu")
 mesh = SubResource("BoxMesh_jyhfs")
 
-[node name="OutlineComponent" type="Area3D" parent="MeshInstance3D" node_paths=PackedStringArray("mesh", "collision_body")]
+[node name="OutlineComponent" type="Area3D" parent="OutlineTestMesh" node_paths=PackedStringArray("mesh", "collision_body")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.617854, 0)
 script = ExtResource("5_tbgi4")
 mesh = NodePath("..")
@@ -103,6 +114,6 @@ outline_material = ExtResource("4_tefeu")
 selection_material = ExtResource("4_tbgi4")
 collision_body = NodePath(".")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/OutlineComponent"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="OutlineTestMesh/OutlineComponent"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.619138, 0)
 shape = SubResource("BoxShape3D_tbgi4")

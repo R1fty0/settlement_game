@@ -19,10 +19,15 @@ config/icon="res://icon.svg"
 
 folder_colors={
 "res://assets/": "red",
+"res://common/": "orange",
 "res://resources/": "purple",
 "res://scenes/": "green",
 "res://scripts/": "blue"
 }
+
+[global_group]
+
+settler_navmesh="Meshes that should be included when baking the navmesh used by settlers. "
 
 [input]
 

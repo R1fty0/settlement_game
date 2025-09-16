@@ -1,0 +1,18 @@
+[gd_scene load_steps=2 format=3 uid="uid://b3hgrj8u0ix1k"]
+
+[ext_resource type="Script" uid="uid://c4p7f2k2fadyq" path="res://scenes/player/camera_controller/camera_controller.gd" id="1_6b34o"]
+
+[node name="CameraController" type="Node3D" node_paths=PackedStringArray("rotation_x", "camera_zoom_pivot", "camera")]
+script = ExtResource("1_6b34o")
+rotation_x = NodePath("CameraRotationX")
+camera_zoom_pivot = NodePath("CameraRotationX/CameraZoomPivot")
+camera = NodePath("CameraRotationX/CameraZoomPivot/Camera3D")
+edge_scrolling_enabled = false
+scroll_speed = 0.2
+
+[node name="CameraRotationX" type="Node3D" parent="."]
+
+[node name="CameraZoomPivot" type="Node3D" parent="CameraRotationX"]
+transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, -0.283894, 2.99331, 5.09319)
+
+[node name="Camera3D" type="Camera3D" parent="CameraRotationX/CameraZoomPivot"]
