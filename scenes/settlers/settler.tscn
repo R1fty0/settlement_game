@@ -1,0 +1,25 @@
+[gd_scene load_steps=6 format=3 uid="uid://smlypxsfeo1v"]
+
+[ext_resource type="PackedScene" uid="uid://cxwk8588amdae" path="res://common/npc/npc.tscn" id="1_g45kt"]
+[ext_resource type="Script" uid="uid://crqf232bs108m" path="res://common/components/interaction_component.gd" id="2_p5r46"]
+[ext_resource type="Material" uid="uid://bd6wf87scg2b4" path="res://resources/materials/outline_material.tres" id="3_asubr"]
+[ext_resource type="Material" uid="uid://btofvmchrrwn7" path="res://resources/materials/selection_material.tres" id="4_d0f46"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_fot4p"]
+
+[node name="Settler" type="Node3D"]
+
+[node name="NPC" parent="." instance=ExtResource("1_g45kt")]
+
+[node name="InteractionComponent" type="Area3D" parent="." node_paths=PackedStringArray("mesh", "collision_body")]
+script = ExtResource("2_p5r46")
+mesh = NodePath("../NPC/MeshInstance3D")
+outline_material = ExtResource("3_asubr")
+selection_material = ExtResource("4_d0f46")
+collision_body = NodePath(".")
+metadata/_custom_type_script = "uid://crqf232bs108m"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="InteractionComponent"]
+shape = SubResource("CapsuleShape3D_fot4p")
+
+[editable path="NPC"]

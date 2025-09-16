@@ -65,8 +65,8 @@ func _process(delta: float) -> void:
 	var input_direction = Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	var movement_direction = (transform.basis * Vector3(input_direction.x, 0.0, input_direction.y).normalized())
 	var rotate_keys = Input.get_axis("rotate_camera_left", "rotate_camera_right")
-	var zoom_direction = (int(Input.is_action_just_released("zoom_camera_in")) - 
-						  int(Input.is_action_just_released("zoom_camera_out")))
+	var zoom_direction = (int(Input.is_action_just_released("zoom_camera_out")) - 
+						  int(Input.is_action_just_released("zoom_camera_in")))
 	# Set movement targets
 	move_target += move_speed * movement_direction
 	rotate_keys_target += rotate_keys * rotate_keys_speed
