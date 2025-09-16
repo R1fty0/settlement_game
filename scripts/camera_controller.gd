@@ -20,6 +20,7 @@ class_name CameraController
 @export var camera_zoom_pivot: Node3D 
 @export var camera: Camera3D
 @export_category("Edge Scrolling")
+@export var edge_scrolling_enabled: bool = true
 @export var edge_size: float = 5.0
 @export var scroll_speed: float = 0.6
 
@@ -41,19 +42,20 @@ func _unhandled_input(event: InputEvent) -> void:
 		rotation_x.rotation_degrees.x = clamp(rotation_x.rotation_degrees.x, min_zoom, max_zoom)
 	
 func _process(delta: float) -> void:
-	# Edge scrolling 
-	var mouse_pos = get_viewport().get_mouse_position()
-	var viewport_size = get_viewport().get_visible_rect().size
-	var scroll_direction = Vector3.ZERO
-	if mouse_pos.x < edge_size:
-		scroll_direction.x = -1
-	elif mouse_pos.x > viewport_size.x - edge_size:
-		scroll_direction.x = 1
-	if mouse_pos.y < edge_size:
-		scroll_direction.z = -1
-	elif mouse_pos.y > viewport_size.y - edge_size:
-		scroll_direction.z = 1
-	move_target += transform.basis * scroll_direction * scroll_speed
+	if edge_scrolling_enabled:
+		# Edge scrolling 
+		var mouse_pos = get_viewport().get_mouse_position()
+		var viewport_size = get_viewport().get_visible_rect().size
+		var scroll_direction = Vector3.ZERO
+		if mouse_pos.x < edge_size:
+			scroll_direction.x = -1
+		elif mouse_pos.x > viewport_size.x - edge_size:
+			scroll_direction.x = 1
+		if mouse_pos.y < edge_size:
+			scroll_direction.z = -1
+		elif mouse_pos.y > viewport_size.y - edge_size:
+			scroll_direction.z = 1
+		move_target += transform.basis * scroll_direction * scroll_speed
 	# Hide mouse cursor if the player is using the mouse to rotate the camera
 	if Input.is_action_just_pressed("rotate_camera"):
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -63,8 +65,8 @@ func _process(delta: float) -> void:
 	var input_direction = Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	var movement_direction = (transform.basis * Vector3(input_direction.x, 0.0, input_direction.y).normalized())
 	var rotate_keys = Input.get_axis("rotate_camera_left", "rotate_camera_right")
-	var zoom_direction = (int(Input.is_action_just_released("zoom_camera_out")) - 
-						  int(Input.is_action_just_released("zoom_camera_in")))
+	var zoom_direction = (int(Input.is_action_just_released("zoom_camera_in")) - 
+						  int(Input.is_action_just_released("zoom_camera_out")))
 	# Set movement targets
 	move_target += move_speed * movement_direction
 	rotate_keys_target += rotate_keys * rotate_keys_speed

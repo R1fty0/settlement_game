@@ -1,8 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://kqp4eqiy7ypq"]
+[gd_scene load_steps=15 format=3 uid="uid://kqp4eqiy7ypq"]
 
 [ext_resource type="Texture2D" uid="uid://b44gfyx7stw6a" path="res://assets/proto_tex/texture_02.png" id="1_0wfyh"]
 [ext_resource type="Texture2D" uid="uid://cdlu4ochhqklm" path="res://assets/proto_tex/texture_01.png" id="2_sugp2"]
 [ext_resource type="Script" uid="uid://c4p7f2k2fadyq" path="res://scripts/camera_controller.gd" id="3_sugp2"]
+[ext_resource type="Material" uid="uid://dwwg2ew7bsovn" path="res://resources/materials/outline.tres" id="4_jyhfs"]
+[ext_resource type="Script" uid="uid://crqf232bs108m" path="res://scripts/cursor_detection_collider.gd" id="5_tbgi4"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_sgp6g"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
@@ -28,6 +30,14 @@ uv1_triplanar = true
 size = Vector2(100, 100)
 subdivide_width = 20
 subdivide_depth = 20
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tefeu"]
+albedo_texture = ExtResource("2_sugp2")
+uv1_triplanar = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_jyhfs"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_tbgi4"]
 
 [node name="Main" type="Node3D"]
 
@@ -68,6 +78,7 @@ script = ExtResource("3_sugp2")
 rotation_x = NodePath("CameraRotationX")
 camera_zoom_pivot = NodePath("CameraRotationX/CameraZoomPivot")
 camera = NodePath("CameraRotationX/CameraZoomPivot/Camera3D")
+edge_scrolling_enabled = false
 scroll_speed = 0.2
 
 [node name="CameraRotationX" type="Node3D" parent="CameraController"]
@@ -76,3 +87,21 @@ scroll_speed = 0.2
 transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, -0.283894, 2.99331, 5.09319)
 
 [node name="Camera3D" type="Camera3D" parent="CameraController/CameraRotationX/CameraZoomPivot"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.617854, 0)
+material_override = SubResource("StandardMaterial3D_tefeu")
+mesh = SubResource("BoxMesh_jyhfs")
+
+[node name="CursorDetectionCollider" type="Area3D" parent="MeshInstance3D" node_paths=PackedStringArray("mesh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.617854, 0)
+script = ExtResource("5_tbgi4")
+mesh = NodePath("..")
+outline_material = ExtResource("4_jyhfs")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/CursorDetectionCollider"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.619138, 0)
+shape = SubResource("BoxShape3D_tbgi4")
+
+[connection signal="mouse_entered" from="MeshInstance3D/CursorDetectionCollider" to="MeshInstance3D/CursorDetectionCollider" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="MeshInstance3D/CursorDetectionCollider" to="MeshInstance3D/CursorDetectionCollider" method="_on_mouse_exited"]
