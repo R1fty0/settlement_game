@@ -82,6 +82,14 @@ left_mouse_button={
 ]
 }
 
+[layer_names]
+
+3d_physics/layer_1="water"
+3d_physics/layer_2="islands"
+3d_physics/layer_3="buildings"
+3d_physics/layer_4="settlers"
+3d_physics/layer_5="pirate_ships"
+
 [rendering]
 
 renderer/rendering_method="gl_compatibility"

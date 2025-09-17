@@ -26,21 +26,22 @@ func _ready() -> void:
 
 func _on_mouse_entered() -> void:
 	# Enable the hover outline. 
-	if not selected:
+	if is_selected == false:
 		mesh.material_overlay = outline_material
 
 func _on_mouse_exited() -> void:
 	# Disable the hover outline. 
-	if not selected:
+	if is_selected == false:
 		mesh.material_overlay = null
 
 func _on_input_event(camera: Node, event: InputEvent, event_position: Vector3, normal: Vector3, shape_idx: int) -> void:
 	# Select/Deselect Object Outline 
 	if event.is_action_pressed("left_mouse_button"):
-		is_selected = not is_selected
-		if selected:
+		if not is_selected:
 			mesh.material_overlay = selection_material
+			is_selected = true
 			selected.emit()
 		else:
 			mesh.material_overlay = outline_material
+			is_selected = false
 			unselected.emit()

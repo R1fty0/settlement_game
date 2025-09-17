@@ -1,1 +1,2 @@
 - All models needed blender weighted normal modifier 
+- Collider for interaction component needs to be bigger than physics colldier to prevent weird flickering from happening
