@@ -1,0 +1,6 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://dtqhba3svw41r"]
+
+[ext_resource type="FontFile" uid="uid://cyjd8jx64gwpk" path="res://assets/fonts/raleway/static/Raleway-Black.ttf" id="1_d4nwg"]
+
+[resource]
+default_font = ExtResource("1_d4nwg")

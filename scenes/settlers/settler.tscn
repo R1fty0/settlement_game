@@ -1,10 +1,17 @@
-[gd_scene load_steps=7 format=3 uid="uid://smlypxsfeo1v"]
+[gd_scene load_steps=14 format=3 uid="uid://smlypxsfeo1v"]
 
 [ext_resource type="PackedScene" uid="uid://cxwk8588amdae" path="res://common/npc/npc.tscn" id="1_g45kt"]
 [ext_resource type="Script" uid="uid://crqf232bs108m" path="res://common/components/interaction_component.gd" id="2_p5r46"]
 [ext_resource type="Material" uid="uid://bd6wf87scg2b4" path="res://resources/materials/outline_material.tres" id="3_asubr"]
 [ext_resource type="Material" uid="uid://btofvmchrrwn7" path="res://resources/materials/selection_material.tres" id="4_d0f46"]
 [ext_resource type="Script" uid="uid://bm72fjoiwmxet" path="res://common/components/cursor_to_world_component.gd" id="5_asubr"]
+[ext_resource type="Script" uid="uid://bbr1njv65r1a7" path="res://scripts/settlers/energy_manager.gd" id="6_d0f46"]
+[ext_resource type="Script" uid="uid://knh85yjivvke" path="res://common/state_machine/state_machine.gd" id="7_cywlq"]
+[ext_resource type="Script" uid="uid://43vtbhburthu" path="res://scripts/settlers/states/idle.gd" id="8_qmyru"]
+[ext_resource type="Script" uid="uid://dv34uug4ar0pr" path="res://scripts/settlers/states/move.gd" id="9_s2ehq"]
+[ext_resource type="Script" uid="uid://70f8drqj78y6" path="res://scripts/settlers/states/work_island.gd" id="10_28mc2"]
+[ext_resource type="Script" uid="uid://dipieaxnr20j5" path="res://scripts/settlers/states/work_building.gd" id="11_xohp2"]
+[ext_resource type="Script" uid="uid://dqy0gjws42nge" path="res://scripts/settlers/states/energy_recharge.gd" id="12_lfhu5"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_fot4p"]
 radius = 0.536549
@@ -13,6 +20,41 @@ height = 2.07335
 [node name="Settler" type="Node3D"]
 
 [node name="NPC" parent="." instance=ExtResource("1_g45kt")]
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+script = ExtResource("7_cywlq")
+initial_state = NodePath("Idle")
+metadata/_custom_type_script = "uid://knh85yjivvke"
+
+[node name="Idle" type="Node" parent="StateMachine"]
+script = ExtResource("8_qmyru")
+metadata/_custom_type_script = "uid://c8juq8gwf7gwe"
+
+[node name="Move" type="Node" parent="StateMachine" node_paths=PackedStringArray("npc")]
+script = ExtResource("9_s2ehq")
+npc = NodePath("../../NPC")
+metadata/_custom_type_script = "uid://c8juq8gwf7gwe"
+
+[node name="WorkIsland" type="Node" parent="StateMachine"]
+script = ExtResource("10_28mc2")
+metadata/_custom_type_script = "uid://c8juq8gwf7gwe"
+
+[node name="WorkBuilding" type="Node" parent="StateMachine"]
+script = ExtResource("11_xohp2")
+metadata/_custom_type_script = "uid://c8juq8gwf7gwe"
+
+[node name="EnergyRecharge" type="Node" parent="StateMachine"]
+script = ExtResource("12_lfhu5")
+metadata/_custom_type_script = "uid://c8juq8gwf7gwe"
+
+[node name="EnergyManager" type="Node" parent="." node_paths=PackedStringArray("recharge_timer", "settler_state_machine", "settler_energy_recharge_state")]
+script = ExtResource("6_d0f46")
+recharge_timer = NodePath("RechargeTimer")
+settler_state_machine = NodePath("../StateMachine")
+settler_energy_recharge_state = NodePath("../StateMachine/EnergyRecharge")
+
+[node name="RechargeTimer" type="Timer" parent="EnergyManager"]
+one_shot = true
 
 [node name="CursorToWorldComponent" type="Node" parent="." node_paths=PackedStringArray("interaction_component")]
 script = ExtResource("5_asubr")

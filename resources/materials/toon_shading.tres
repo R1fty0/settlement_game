@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://dwf24vc3egtju"]
+
+[resource]
+shading_mode = 2
+diffuse_mode = 3
+specular_mode = 1
+metallic_specular = 0.1
+roughness = 0.3
