@@ -5,6 +5,7 @@ class_name CameraController
 # Credit: https://www.youtube.com/watch?v=LpmphY0WYFQ
 # This script assumes the camera position reference is itself. 
 
+@export var zoom_enabled: bool = false
 @export var mouse_sens: float = 0.2
 @export_category("Speeds")
 ## How fast the camera move horizontally
@@ -12,9 +13,9 @@ class_name CameraController
 ## How fast the camera rotates when using the rotate keys 
 @export var rotate_keys_speed: float = 1.5
 @export var zoom_speed: float = 0.3
-@export_category("Zoom Limits")
-@export var min_zoom: float = -10.0
-@export var max_zoom: float = 30.0
+@export_category("Vertical Look Limits")
+@export var min_angle: float = 10.0
+@export var max_angle: float = 30.0
 @export_category("References")
 @export var rotation_x: Node3D 
 @export var camera_zoom_pivot: Node3D 
@@ -39,7 +40,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and Input.is_action_pressed("rotate_camera"):
 		rotate_keys_target -= event.relative.x * mouse_sens
 		rotation_x.rotation_degrees.x -= event.relative.y * mouse_sens
-		rotation_x.rotation_degrees.x = clamp(rotation_x.rotation_degrees.x, min_zoom, max_zoom)
+		rotation_x.rotation_degrees.x = clamp(rotation_x.rotation_degrees.x, min_angle * -1, max_angle)
 	
 func _process(delta: float) -> void:
 	if edge_scrolling_enabled:
@@ -74,4 +75,5 @@ func _process(delta: float) -> void:
 	# Lerp movement to target 
 	position = lerp(position, move_target, 0.10)
 	rotation_degrees.y = lerp(rotation_degrees.y, rotate_keys_target, 0.10)
-	camera.position.z = lerp(camera.position.z, zoom_target, 0.10)
+	if zoom_enabled:
+		camera.position.z = lerp(camera.position.z, zoom_target, 0.10)

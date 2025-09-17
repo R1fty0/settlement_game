@@ -21,21 +21,7 @@ background_mode = 2
 sky = SubResource("Sky_o5qli")
 tonemap_mode = 2
 
-[sub_resource type="NavigationMesh" id="NavigationMesh_tefeu"]
-vertices = PackedVector3Array(11.2661, 0.553284, -19.9861, 11.2661, 0.553284, -14.4861, 16.2661, 0.553284, -14.4861, 16.2661, 0.553284, -19.9861, -14.9839, 0.553284, -16.2361, -14.9839, 0.553284, -10.4861, -9.98395, 0.553284, -10.4861, -9.98395, 0.553284, -16.2361, -4.73395, 0.803284, -4.73611, -4.73395, 0.803284, 4.51389, 4.51605, 0.803284, 4.51389, 4.51605, 0.803284, -4.73611, -13.4839, 0.553284, 12.2639, -13.4839, 0.553284, 17.7639, -8.23395, 0.553284, 17.7639, -8.23395, 0.553284, 12.2639)
-polygons = [PackedInt32Array(3, 2, 0), PackedInt32Array(0, 2, 1), PackedInt32Array(7, 6, 4), PackedInt32Array(4, 6, 5), PackedInt32Array(11, 10, 8), PackedInt32Array(8, 10, 9), PackedInt32Array(15, 14, 12), PackedInt32Array(12, 14, 13)]
-agent_height = 1.0
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jyhfs"]
-albedo_color = Color(0, 0, 0, 1)
-albedo_texture = ExtResource("1_0wfyh")
-uv1_triplanar = true
-
-[sub_resource type="BoxMesh" id="BoxMesh_o6xl0"]
-size = Vector3(10, 1, 10)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_tipki"]
-size = Vector3(9.98334, 1, 9.98389)
+[sub_resource type="NavigationMesh" id="NavigationMesh_tipki"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_85g3d"]
 render_priority = 0
@@ -50,8 +36,21 @@ size = Vector2(100, 100)
 subdivide_width = 20
 subdivide_depth = 20
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_85g3d"]
-size = Vector3(100, 0.1, 100)
+[sub_resource type="NavigationMesh" id="NavigationMesh_tefeu"]
+vertices = PackedVector3Array(11.2661, 0.553284, -19.9861, 11.2661, 0.553284, -14.4861, 16.2661, 0.553284, -14.4861, 16.2661, 0.553284, -19.9861, -14.9839, 0.553284, -16.2361, -14.9839, 0.553284, -10.4861, -9.98395, 0.553284, -10.4861, -9.98395, 0.553284, -16.2361, 4.51605, 0.803284, 4.51389, 4.51605, 0.803284, 1.01389, 2.51605, 0.803284, 0.763885, -4.73395, 0.803284, 4.51389, 2.51605, 0.803284, -0.986115, 4.51605, 0.803284, -1.23611, 4.51605, 0.803284, -4.73611, -4.73395, 0.803284, -4.73611, -13.4839, 0.553284, 12.2639, -13.4839, 0.553284, 17.7639, -8.23395, 0.553284, 17.7639, -8.23395, 0.553284, 12.2639)
+polygons = [PackedInt32Array(3, 2, 0), PackedInt32Array(0, 2, 1), PackedInt32Array(7, 6, 4), PackedInt32Array(4, 6, 5), PackedInt32Array(9, 8, 10), PackedInt32Array(10, 8, 11), PackedInt32Array(13, 12, 14), PackedInt32Array(14, 12, 15), PackedInt32Array(12, 10, 15), PackedInt32Array(15, 10, 11), PackedInt32Array(19, 18, 16), PackedInt32Array(16, 18, 17)]
+agent_height = 1.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jyhfs"]
+albedo_color = Color(0, 0, 0, 1)
+albedo_texture = ExtResource("1_0wfyh")
+uv1_triplanar = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_o6xl0"]
+size = Vector3(10, 1, 10)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_tipki"]
+size = Vector3(9.98334, 1, 9.98389)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tefeu"]
 albedo_texture = ExtResource("2_sugp2")
@@ -70,58 +69,56 @@ environment = SubResource("Environment_0wfyh")
 transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
 shadow_enabled = true
 
-[node name="Environment" type="Node" parent="."]
+[node name="Map" type="Node" parent="."]
 
-[node name="TestNavigationObstacle" type="CSGBox3D" parent="Environment"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.537, 0.5, 0)
-use_collision = true
+[node name="Water" type="NavigationRegion3D" parent="Map"]
+navigation_mesh = SubResource("NavigationMesh_tipki")
 
-[node name="NavigationRegion3D" type="NavigationRegion3D" parent="Environment"]
-navigation_mesh = SubResource("NavigationMesh_tefeu")
-
-[node name="MainIsland" type="StaticBody3D" parent="Environment/NavigationRegion3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.196716, 0)
-collision_layer = 2
-collision_mask = 0
-
-[node name="Mesh" type="MeshInstance3D" parent="Environment/NavigationRegion3D/MainIsland"]
-material_override = SubResource("StandardMaterial3D_jyhfs")
-mesh = SubResource("BoxMesh_o6xl0")
-skeleton = NodePath("../..")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Environment/NavigationRegion3D/MainIsland"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00137329, 0, -0.00561523)
-shape = SubResource("BoxShape3D_tipki")
-debug_color = Color(0, 0.62997, 0.47727, 0.42)
-
-[node name="StoneIsland" type="CSGBox3D" parent="Environment/NavigationRegion3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.8035, -0.196716, 15.14)
-size = Vector3(5.9751, 0.607, 6.29443)
-
-[node name="WoodIsland" type="CSGBox3D" parent="Environment/NavigationRegion3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.4964, -0.196716, -13.3822)
-size = Vector3(5.9751, 0.607, 6.29443)
-
-[node name="FoodIsland" type="CSGBox3D" parent="Environment/NavigationRegion3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.8924, -0.196716, -17.3389)
-size = Vector3(5.9751, 0.607, 6.29443)
-
-[node name="Water" type="StaticBody3D" parent="Environment"]
-collision_mask = 0
-
-[node name="WaterMesh" type="MeshInstance3D" parent="Environment/Water"]
+[node name="WaterMesh" type="MeshInstance3D" parent="Map/Water"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.314779, 0)
 material_override = SubResource("ShaderMaterial_85g3d")
 mesh = SubResource("PlaneMesh_sgp6g")
 skeleton = NodePath("../..")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Environment/Water"]
-shape = SubResource("BoxShape3D_85g3d")
-debug_color = Color(0, 0.62526, 0.521781, 0.42)
+[node name="Islands" type="NavigationRegion3D" parent="Map"]
+navigation_mesh = SubResource("NavigationMesh_tefeu")
+
+[node name="MainIsland" type="StaticBody3D" parent="Map/Islands"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.196716, 0)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Mesh" type="MeshInstance3D" parent="Map/Islands/MainIsland"]
+material_override = SubResource("StandardMaterial3D_jyhfs")
+mesh = SubResource("BoxMesh_o6xl0")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/Islands/MainIsland"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00137329, 0, -0.00561523)
+shape = SubResource("BoxShape3D_tipki")
+debug_color = Color(0, 0.62997, 0.47727, 0.42)
+
+[node name="StoneIsland" type="CSGBox3D" parent="Map/Islands"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.8035, -0.196716, 15.14)
+size = Vector3(5.9751, 0.607, 6.29443)
+
+[node name="WoodIsland" type="CSGBox3D" parent="Map/Islands"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.4964, -0.196716, -13.3822)
+size = Vector3(5.9751, 0.607, 6.29443)
+
+[node name="FoodIsland" type="CSGBox3D" parent="Map/Islands"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.8924, -0.196716, -17.3389)
+size = Vector3(5.9751, 0.607, 6.29443)
+
+[node name="TestNavigationObstacle" type="CSGBox3D" parent="Map/Islands"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.537, 0.5, 0)
+use_collision = true
 
 [node name="CameraController" type="Node3D" parent="." node_paths=PackedStringArray("rotation_x", "camera_zoom_pivot", "camera")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5199, 0, 0)
 script = ExtResource("3_sugp2")
+min_angle = 25.0
+max_angle = -10.0
 rotation_x = NodePath("CameraRotationX")
 camera_zoom_pivot = NodePath("CameraRotationX/CameraZoomPivot")
 camera = NodePath("CameraRotationX/CameraZoomPivot/Camera3D")
@@ -129,9 +126,10 @@ edge_scrolling_enabled = false
 scroll_speed = 0.2
 
 [node name="CameraRotationX" type="Node3D" parent="CameraController"]
+transform = Transform3D(1, 0, 0, 0, 0.999244, 0.0388761, 0, -0.0388761, 0.999244, 0, 0, 0)
 
 [node name="CameraZoomPivot" type="Node3D" parent="CameraController/CameraRotationX"]
-transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, -0.283894, 2.99331, 5.09319)
+transform = Transform3D(1, 0, 0, 0, 0.707106, 0.707106, 0, -0.707106, 0.707106, -0.283894, 5.60826, 10.9209)
 
 [node name="Camera3D" type="Camera3D" parent="CameraController/CameraRotationX/CameraZoomPivot"]
 
